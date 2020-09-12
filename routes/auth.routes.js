@@ -52,9 +52,10 @@ router.post("/login", (req, res, next) => {
         return;
       }
       if (bcryptjs.compareSync(password, user.passwordHash)) {
+        req.session.user = user;
         res.send("loggé!");
 
-        req.session.user = user;
+        
       } else {
         res.render("auth/login", {
           errorMessage: "Incorrect email / password",
@@ -63,5 +64,23 @@ router.post("/login", (req, res, next) => {
     })
     .catch(err => next(err));
 });
+
+router.get('/main', (req, res,next) => {
+  if (!req.session.user) {
+    res.redirect('/login');
+    return;
+  }
+
+  res.render('protect/main')
+});
+
+router.get('/private', (req, res,next) => {
+  if (!req.session.user) {
+    res.redirect('/login');
+    return;
+  }
+
+  res.render('protect/private');
+})
 
 module.exports = router;
