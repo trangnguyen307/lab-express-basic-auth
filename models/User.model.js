@@ -1,8 +1,11 @@
 // User model here
-const { Schema, model } = require ('mongoose');
 
-const userSchema = new Schema (
-    {
+const {
+    Schema,
+    model
+} = require('mongoose');
+
+const userSchema = new Schema({
         username: {
             type: String,
             trim: true,
@@ -17,14 +20,15 @@ const userSchema = new Schema (
             lowercase: true
         },
         passwordHash: {
-            trpe: String,
+            type: String,
             required: [true, 'Password is required.']
         }
     },
 
     {
-    timestamps: true
+        timestamps: true
     }
 );
+const userModel = model('User', userSchema)
 
-module.exports = model ('User', userSchema);
+module.exports = userModel
